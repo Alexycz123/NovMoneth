@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ycz.mapper.ProvinceMapper">
+    <resultMap id="Province_resultMap" type="com.ycz.pojo.Province">
+        <result column="province_id" property="provinceId"/>
+        <result column="province_name" property="provinceName"/>
+    </resultMap>
+
+    <select id="selectList" resultMap="Province_resultMap">
+        select * from tb_province
+    </select>
+</mapper>

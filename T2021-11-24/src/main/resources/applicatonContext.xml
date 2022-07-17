@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context.xsd
+http://www.springframework.org/schema/aop
+http://www.springframework.org/schema/aop/spring-aop.xsd
+">
+    <bean id="empController" class="com.icis.controller.EmployeeController">
+        <property name="objectMapper" ref="objectMapper"/>
+        <property name="employeeService" ref="empService"/>
+    </bean>
+
+    <bean id="empService" class="com.icis.service.impl.EmployeeServiceImpl">
+        <property name="employeeDao" ref="empDao"/>
+    </bean>
+
+    <bean id="empDao" class="com.icis.dao.impl.EmployeeDaoImpl">
+        <property name="template" ref="jdbcTemplate"/>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+
+<!--    <context:component-scan base-package="com.icis"/>-->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${db.driverClassName}"/>
+        <property name="username" value="${db.username}"/>
+        <property name="url" value="${db.url}"/>
+        <property name="password" value="${db.password}"/>
+     </bean>
+
+
+    <bean id="serviceAdvice" class="com.icis.advise.ServiceAdvice"/>
+
+<!--    <aop:config>-->
+
+<!--        <aop:aspect id="serviceAdvice"  ref="serviceAdvice">-->
+<!--            <aop:before method="beforeAdvice" pointcut-ref="mypointcut"/>-->
+<!--            <aop:pointcut id="mypointcut" expression="execution(* com.icis.service.impl.*.*(..)-->
+<!--        )"/>-->
+<!--        </aop:aspect>-->
+<!--    </aop:config>-->
+
+    <aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+</beans>
